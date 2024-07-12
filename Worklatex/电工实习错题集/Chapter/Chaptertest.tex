@@ -1,0 +1,130 @@
+\documentclass[normal,cn,hang,blue,ctexfont,chinese]{mycls}                                                            
+
+\RequirePackage{tcolorbox}
+\RequirePackage{tikz} %% load tikz without tikz
+\usetikzlibrary{backgrounds,calc,shadows,positioning,fit}
+\newcommand*\circled[1]{\tikz[baseline=(char.base)]{
+            \node[shape=circle,draw,inner sep=1pt] (char) {#1};}}
+
+\newcounter{exam}[chapter]
+\setcounter{exam}{0}
+\renewcommand{\theexam}{\thechapter.\arabic{exam}}
+\newenvironment{example}[1][]{
+	 \refstepcounter{exam}
+	 \par\noindent\textbf{\color{main}{\examplename} \theexam #1 }\rmfamily}{
+	\par\ignorespacesafterend}
+
+\addbibresource[location=local]{mybib.bib}
+
+\begin{document}
+
+\chapter{前言}
+与传统的电励磁同步电机相比，永磁同步电机（Permanent Magnet Synchronous 
+Motor,PMSM）具有结构简单、运行可靠、体积小、质量轻、损耗小、效率高，以及电机
+的形状和尺寸可以灵活多样等显著优点 近年来，随着材料技术的不断发展，永磁材
+料性能的不断提高，以及永磁电机控制技术的不断成熟， PMSM 已经在民用、航天和
+军事等领域得到了广泛应用。然而， PMSM 是一个多变量、强糯合、非线性和变参数
+的复杂对象，为了获得较好的控制性能，需要对其采用一定的控制算法 随着现代控
+制理论的不断发展，近年来有关 PMSM 控制算法的研究已经成为研究热点，并已有
+大量文献发表在国内外学术期刊和专著上。因此，为了使广大工程技术人员能够充
+分了解、掌握和应用这一领域的最新技术，学会用 MATLAB 仿真软件进行相关
+PMSM 控制算法的设计，作者编写了本书，以抛砖引玉，供广大读者学习参考。 
+
+\begin{example}
+	wo
+\end{example}
+本书是在总结作者多年研究成果的基础上，进一步理论化、系统化和实用化而形
+成的；是基于目前较为先进的 MATLAB 2014b 仿真软件，在总体上按照由浅人深、
+由易到难的原则进行编写的 。本书具有如下特点：
+
+本书分为 部分共 10 章。第 部分为基础篇，包括第 章，第 章介绍
+PMSM 的数学建模方法，第 章介绍 相电压源逆变器 PWM 技术，第 章介绍几
+种常用的 PMSM 量控 MATLAB 仿真建模方法，第 章介绍 PMSM
+直接转矩控 MATLAB 仿真建模方法。第 部分为进阶篇，包括第 章和
+章，第 章介绍基于基波数学模型的 PMSM 无传感器控制 MATLAB 仿真
+建模方法，第 章介绍基于高频信号注人的 PMSM 元传感器控制 MATLAB
+真建模方法。第 部分为高级篇，包括第 10 章，第 章介绍六相 PMSM 的数学建
+模方法，第 章介绍六相电压源逆变器 PWM 技术 MATLAB 仿真建模方法，第章介
+
+\section{技术} 
+	本章主要介绍 相电斥源逆变器 PWM 技术的基本原理和仿真建模，首先，介绍
+	两电平空间矢量调制（ Space Vector P ulse Width Modu ation,SVPWM ）算法在线性
+	调制区内的基本工作原理和实现方法，同时给出采用 Simulink 模块和 函数方法搭
+	建的仿真模型，并给出仿真结果；其次，介绍几种常用的正弦脉宽调制（ Sinusoidal 
+	Pulse Width Modu ation,SPWM ）算法的基本工作原理和 MATLAB 建模方法，并给
+	出了仿真结果
+
+		本书分为 部分共 10 章。第 部分为基础篇，包括第 章，第 章介绍
+	PMSM 的数学建模方法，第 章介绍 相电压源逆变器 PWM 技术，第 章介绍几
+	种常用的 PMSM 量控 MATLAB 仿真建模方法，第 章介绍 PMSM
+	直接转矩控 MATLAB 仿真建模方法。第 部分为进阶篇，包括第 章和
+	章，第 章介绍基于基波数学模型的 PMSM 无传感器控制 MATLAB 仿真
+	建模方法，第 章介绍基于高频信号注人的 PMSM 元传感器控制 MATLAB
+	真建模方法。第 部分为高级篇，包括第 10 章，第 章介绍六相 PMSM 的数学建
+	模方法，第 章介绍六相电压源逆变器 PWM 技术 MATLAB 仿真建模方法，第章介
+
+	\section{没有}  
+	原因，我们2021年，正值“十四五”开局之年，也是中国共产党建党百年，总书记再到广西。围绕
+	推动经济高质量发展、加快推进乡村振兴等问题，总书记深入调研，并指导开展党史学习教育。
+	今年这次广西之行，是在全面贯彻党的二十大精神的开局之年再赴广西，也是中央经济工作会议
+	后总书记首次国内考察。关键节点，再到广西，蕴含深意
+
+		因此， 相对称正弦电压对应的空间电压矢量运动轨迹如图 - 所示。从图
+	中可以看出，电压空间矢量 顶点的运动轨迹为一个圆，且以角速度 逆时针旋
+	转。根据空间矢量变换的可逆性，可以想象若空间电压矢量 剧的顶点运动轨迹为 129 
+	一个圆，则原 相电压越趋近于三相对称正弦波 。三相对称正弦电压供电是理想的
+	供电方式，也是逆变器交流输出电压控制的追求目标。实际上，通过空间矢量变换，
+	可以将逆变器 相输出的 个标量的控制问题转化为一个矢量的控制问题。
+	\subsection{三项电机} 
+	本章主要介绍 相电斥源逆变器 PWM 技术的基本原理和仿真建模，首先，介绍
+	两电平空间矢量调制（ Space Vector P ulse Width Modu ation,SVPWM ）算法在线性
+	调制区内的基本工作原理和实现方法，同时给出采用 Simulink 模块和 函数方法搭
+	建的仿真模型，并给出仿真结果；其次，介绍几种常用的正弦脉宽调制（ Sinusoidal 
+	Pulse Width Modu ation,SPWM ）算法的基本工作原理和 MATLAB 建模方法，并给
+	出了仿真结果
+		本书分为 部分共 10 章。第 部分为基础篇，包括第 章，第 章介绍
+	PMSM 的数学建模方法，第 章介绍 相电压源逆变器 PWM 技术，第 章介绍几
+	种常用的 PMSM 量控 MATLAB 仿真建模方法，第 章介绍 PMSM
+	直接转矩控 MATLAB 仿真建模方法。第 部分为进阶篇，包括第 章和
+	章，第 章介绍基于基波数学模型的 PMSM 无传感器控制 MATLAB 仿真
+	建模方法，第 章介绍基于高频信号注人的 PMSM 元传感器控制 MATLAB
+	真建模方法。第 部分为高级篇，包括第 10 章，第 章介绍六相 PMSM 的数学建
+	模方法，第 章介绍六相电压源逆变器 PWM 技术 MATLAB 仿真建模方法，第章介
+
+
+	
+	
+
+\chapter{学习联系}
+章，第 章介绍基于基波数学模型的 PMSM 无传感器控制 MATLAB 仿真
+	建模方法，第 章介绍基于高频信号注人的 PMSM 元传感器控制 MATLAB
+	真建模方法。第 部分为高级篇，包括第 10 章，第 章介绍六相 PMSM 的数学建
+	模方法，第 章介绍六相电压源逆变器 PWM 技术 MATLAB 仿真建模方法，第章介
+
+	\begin{example}
+		章，第 章介绍基于基波数学模型的 PMSM 无传感器控制 MATLAB 仿真
+	建模方法，第 章介绍基于高频信号注人的 PMSM 元传感器控制 MATLAB
+	真建模方法。第 部分为高级篇，包括第 10 章，第 章介绍六相 PMSM 的数学建
+	模方法，第 章介绍六相电压源逆变器 PWM 技术 MATLAB 仿真建模方法，第章介
+	\end{example}
+
+	\begin{example}
+		章，第 章介绍基于基波数学模型的 PMSM 无传感器控制 MATLAB 仿真
+	建模方法，第 章介绍基于高频信号注人的 PMSM 元传感器控制 MATLAB
+	真建模方法。第 部分为高级篇，包括第 10 章，第 章介绍六相 PMSM 的数学建
+	模方法，第 章介绍六相电压源逆变器 PWM 技术 MATLAB 仿真建模方法，第章介
+	\end{example}
+
+	\begin{example}
+		章，第 章介绍基于基波数学模型的 PMSM 无传感器控制 MATLAB 仿真
+	建模方法，第 章介绍基于高频信号注人的 PMSM 元传感器控制 MATLAB
+	真建模方法。第 部分为高级篇，包括第 10 章，第 章介绍六相 PMSM 的数学建
+	模方法，第 章介绍六相电压源逆变器 PWM 技术 MATLAB 仿真建模方法，第章介
+	\end{example}
+
+	\mbox{frr}
+	% % %%%%%%%%%%%%%%%%%%%%%%% 取消这段引用就有参考文献了%%%%%%%%%%%%%%%%%%%%%%%%%
+		\newpage
+	
+	% % %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\end{document}
