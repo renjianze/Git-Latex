@@ -246,6 +246,7 @@
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%    目录  %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%  \RequirePackage{tocloft}
 \newcommand{\zjut@content@dot}{\hspace{.5em}\titlerule*[0.5pc]{\zihao{-4} \normalfont{.}} {\normalfont \zihao{-4} \thecontentspage}}
 \newcommand{\zjut@content@dott}{\hspace{.5em}\titlerule*{\zihao{-4} \normalfont} {\normalfont \zihao{-4} \bfseries\thecontentspage}}
 
@@ -253,12 +254,41 @@
 \titlecontents{section}[4em]{ \hspace{0pt}\vspace{0.2em}}{\contentslabel{2em}}{\hspace*{2em}}{\zjut@content@dot}
 \titlecontents{subsection}[5em]{ \hspace{0pt}\vspace{0em}}{\contentslabel{2em}}{\hspace*{2em}}{\zjut@content@dot}
 
+
+% % 初始化附录标志
+% \newif\ifappendix
+% \appendixfalse
+\newtoggle{appendix}
+\togglefalse{appendix}
+
 \titlecontents{chapter} % 适用于章节
   [1em] % 缩进量
   {\bfseries \songti} % 章节标题的字体
-  {\chinesechapter{\thecontentslabel}\hspace{2pt} }% 章节编号的格式
+  % { \thecontentslabel \hspace{2pt}}%
+   {\ifnum\value{chapter}>0 附~录~\thecontentslabel \else \chinesechapter{\thecontentslabel} \fi \hspace{2pt}}%
+  % {\iftoggle{appendix}{附~录~\thecontentslabel}{\chinesechapter{\thecontentslabel}} \hspace{2pt}} % 章节编号前的额外内容
   {\hspace*{2em}} % 章节编号前的额外内容
   {\zjut@content@dott} % 章节标题和页码之间的分隔符
+
+  % \renewcommand\tableofcontents{%
+  % \hypersetup{linktoc=all, linkcolor=black}
+  %   \if@twocolumn
+  %     \@restonecoltrue\onecolumn
+  %   \else
+  %     \@restonecolfalse
+  %   \fi
+  %   \chapter*{\contentsname
+  %       \@mkboth{%
+  %          \MakeUppercase\contentsname}{\MakeUppercase\contentsname}}%
+  %   \ifdefstring{\ELEGANT@toc}{twocol}{
+  %     \setlength{\columnsep}{2em}
+  %     \begin{multicols}{2}%
+  %       \@starttoc{toc}
+  %     \end{multicols}}{
+  %     \@starttoc{toc}}
+  %   \if@restonecol\twocolumn\fi
+  %   \hypersetup{linkcolor=winered}}
+
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%   封面  %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -283,7 +313,7 @@
 \title{\LaTeX 模板\_电工实习错题集}
 \subtitle{自定义\LaTeX 模板 }
 \author{任建泽}
-\date{宁波普瑞均胜汽车电子有限公司 2024/7/14}
+\date{中国科学院宁波材料技术与工程研究所 2024/7/14}
 \institute{浙江工业大学 \&  宁波材料技术与工程研究所}
 \version{v1.0.0}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% 这个命令可以设置封面的格式
