@@ -2,25 +2,20 @@
 % \documentclass{book}
 
 
-% \title{ElegantBook：优美的 \LaTeX{} 书籍模板}
-% \subtitle{Elegant\LaTeX{} 经典之作}
 
-% \author{Ethan Deng \& Liam Huang \& syvshc \& sikouhjw \& Osbert Wang}
-% \institute{Elegant\LaTeX{} Program}
-% \date{2022/12/31}
-% \version{4.5}
-% % \bioinfo{自定义}{信息}
-% \extrainfo{注意：本模板自 2023 年 1 月 1 日开始，不再更新和维护！}
 
-% \logo{logo-blue.png}
-% \cover{cover.jpg}
+% \usepackage{tocloft}
+% \renewcommand{\cfttoctitlefont}{\color{red}\Huge\bfseries} % 设置目录标题的字体样式
+% \renewcommand{\cftaftertoctitle}{\hfill} % 使用 \hfill 插入水平填充以实现居中
 
-%  \usepackage{enumerate}
-% \usepackage{pifont}
-% \newcommand{\cmark}{\ding{51}} % 打勾符号
-% \newcommand{\xmark}{\ding{55}} % 打叉符号
+
+
+
 
  \newcommand{\ccr}[1]{\makecell{{\color{#1}\rule{1cm}{1cm}}}}
+
+ 
+
     
 \begin{document}
 % \maketitle
@@ -34,7 +29,7 @@
    {\bfseries 而非夫人那就看你就你那内存颗粒带你看赛场你}
    
 
-   \toggletrue{appendix}
+   % \toggletrue{appendix}
 
    \appendix
    % \appendixtrue % 设置附录标志

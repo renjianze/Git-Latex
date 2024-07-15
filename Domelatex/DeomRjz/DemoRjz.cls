@@ -123,7 +123,8 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% 关键字  常用名称%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \ifdefstring{\ELEGANT@lang}{cn}{
 %   \renewcommand{\baselinestretch}{1.3}
-    \renewcommand{\contentsname}{目录}   %重命名目录
+    \renewcommand{\contentsname}{目~录}   %重命名目录
+    % \renewcommand{\contentsname}{\textcolor{structurecolor}{\Large\bfseries 目~录}}
 %   \renewcommand{\figurename}{图}
 %   \renewcommand{\tablename}{表}
 %   \renewcommand{\partname}{\color{structurecolor}}
@@ -197,7 +198,7 @@
 \RequirePackage[center,pagestyles]{titlesec}
 \RequirePackage[title,titletoc,header]{appendix}
 \RequirePackage{apptools}
-\RequirePackage{titletoc}
+\RequirePackage{titletoc}   %% 这个可以设置目录和章节样式
 
 \ifdefstring{\ELEGANT@titlestyle}{hang}{\def\style{hang}}{\relax}
 \ifdefstring{\ELEGANT@titlestyle}{display}{\def\style{display}}{\relax}
@@ -244,22 +245,17 @@
 \fancyfoot[C]{\thepage}\relax
 % \renewcommand{\footrulewidth}{2pt}
 
-
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%    目录  %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%  \RequirePackage{tocloft}
+\RequirePackage{tocloft}
 \newcommand{\zjut@content@dot}{\hspace{.5em}\titlerule*[0.5pc]{\zihao{-4} \normalfont{.}} {\normalfont \zihao{-4} \thecontentspage}}
 \newcommand{\zjut@content@dott}{\hspace{.5em}\titlerule*{\zihao{-4} \normalfont} {\normalfont \zihao{-4} \bfseries\thecontentspage}}
+
+\renewcommand{\cfttoctitlefont}{\hfill\Huge\bfseries\centering\color{structurecolor}}
+\renewcommand{\cftaftertoctitle}{\hfill}   %% 居中
 
 \setcounter{tocdepth}{2}
 \titlecontents{section}[4em]{ \hspace{0pt}\vspace{0.2em}}{\contentslabel{2em}}{\hspace*{2em}}{\zjut@content@dot}
 \titlecontents{subsection}[5em]{ \hspace{0pt}\vspace{0em}}{\contentslabel{2em}}{\hspace*{2em}}{\zjut@content@dot}
-
-
-% % 初始化附录标志
-% \newif\ifappendix
-% \appendixfalse
-\newtoggle{appendix}
-\togglefalse{appendix}
 
 \titlecontents{chapter} % 适用于章节
   [1em] % 缩进量
@@ -270,24 +266,12 @@
   {\hspace*{2em}} % 章节编号前的额外内容
   {\zjut@content@dott} % 章节标题和页码之间的分隔符
 
-  % \renewcommand\tableofcontents{%
-  % \hypersetup{linktoc=all, linkcolor=black}
-  %   \if@twocolumn
-  %     \@restonecoltrue\onecolumn
-  %   \else
-  %     \@restonecolfalse
-  %   \fi
-  %   \chapter*{\contentsname
-  %       \@mkboth{%
-  %          \MakeUppercase\contentsname}{\MakeUppercase\contentsname}}%
-  %   \ifdefstring{\ELEGANT@toc}{twocol}{
-  %     \setlength{\columnsep}{2em}
-  %     \begin{multicols}{2}%
-  %       \@starttoc{toc}
-  %     \end{multicols}}{
-  %     \@starttoc{toc}}
-  %   \if@restonecol\twocolumn\fi
-  %   \hypersetup{linkcolor=winered}}
+
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%  目录222
 
 
 
