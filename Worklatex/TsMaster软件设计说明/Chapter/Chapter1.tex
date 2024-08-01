@@ -1,0 +1,76 @@
+\chapter{TsMaster软件设计}
+
+本文基于TsMaster软件设计上位机程序。
+
+
+\section{TsMaster软件}
+TSMaster是一款虚拟仪器软件平台，可连接、配置并控制所有同星的硬件工具、设备，实
+现汽车总线嵌入式代码生成、监控、仿真、开发、诊断、标定、ECU刷写、I/O控制、测试测量等功能。\\
+\textbf{\textcolor{red}{主要应用场景：}}
+\begin{itemize}
+	\kaishu
+	\item 汽车总线通讯系统设计。
+	\item 整车网络验证。
+	\item 零部件PV/DV验证。
+	\item 路试标定。
+	\item 信息安全验证，远程DOS攻击。
+	\item ADAS无人驾驶数据采集回放。
+\end{itemize}
+相较于CANoe软件，该软件不需要测试
+
+
+\section{报文预发送}
+\begin{lstlisting}[language=c]
+	#include "studio"
+
+	int main()
+	{
+		return 0;
+	}
+	char DSPraw[8];
+	char MCUraw[4];
+	   
+   // 
+	if (ACAN->FData[0] == 0x10 && ACAN->FData[1] == 0x13 &&  ACAN->FData[2] == 0x62
+	&& ACAN->FData[3] == 0xF1 &&  ACAN->FData[4] == 0x94)
+	{
+		   MCUraw[0]= (ACAN->FData[5]&0x0F)+0x30;
+		   MCUraw[1]= (ACAN->FData[6]&0x0F)+0x30;
+		   MCUraw[2]= (ACAN->FData[7]&0x0F)+0x30;
+		   MCUraw[3]= '\0'; 
+		   MCUVersion.set(MCUraw);
+		  }
+		  
+   if (ACAN->FData[0] == 0x21)
+   {
+		   DSPraw[0]= (ACAN->FData[1] & 0x0F) + 0x30;
+		   DSPraw[1]= (ACAN->FData[2] & 0x0F) + 0x30;
+		   DSPraw[2]= (ACAN->FData[3] & 0x0F) + 0x30;
+		   DSPraw[3]= (ACAN->FData[4] & 0x0F) + 0x30;
+		   DSPraw[4]= (ACAN->FData[5] & 0x0F) + 0x30;
+		   DSPraw[5]= (ACAN->FData[6] & 0x0F) + 0x30;
+		   DSPraw[6]= (ACAN->FData[7] & 0x0F) + 0x30;
+		   DSPraw[7]= '\0';
+		   DSPVersion.set(DSPraw); 
+   
+	}
+   
+\end{lstlisting}
+
+\begin{lstlisting}[language=matlab]
+	clear all
+	clc
+	if a==5；
+		ret = DspVersion.set(360);
+	end
+\end{lstlisting}
+
+
+
+
+
+
+
+
+
+

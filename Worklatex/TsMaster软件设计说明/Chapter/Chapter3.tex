@@ -1,0 +1,87 @@
+%
+%
+
+
+
+
+
+
+
+
+% test 代码
+\chapter{代码测试}
+\section{matlab}
+\begin{lstlisting}[language=matlab] 
+    clear
+    clc
+    
+    I=imread('C:\Users\Administrator\Desktop\readtest\timg.jpg');
+    if ndims(I) == 3%如果图片是3维（彩图）
+    I = rgb2gray(I);%转成灰图
+    end %结束
+    
+    
+    [row,col]=find(I>=100);
+    aaa=[row,col];             %aaa是大于100的位置 
+    [irow icol]=size(col);     %为了把irow拿出来，就是一共有多少个大于100的数，有多少行就有多少个
+    % imshow(I); %展示图片
+    I = double(I);
+    
+    all=0;
+    for i=1:irow
+    all=I(row(i),col(i))+all;
+    end    
+    
+    all
+\end{lstlisting} 
+
+\begin{lstlisting}[language=C]
+    #include "stdio"
+    #include "math"
+    int main(void)
+    {
+        int a = 16;
+        int b = 46;
+        int c = a+b;
+        printf("hello %d",c);
+    }   
+\end{lstlisting}
+
+
+
+\begin{lstlisting}
+    \renewcommand{\ttdefault}{cmtt}
+    \lstdefinestyle{mystyle}
+    {
+    basicstyle=%
+    \ttfamily
+    \lst@ifdisplaystyle\small\fi
+    }
+    \lstset{basicstyle=\ttfamily,style=mystyle,breaklines=true}
+    \definecolor{lightgrey}{rgb}{0.9,0.9,0.9}
+    \definecolor{frenchplum}{RGB}{190,20,83}
+    \definecolor{winered}{rgb}{0.5,0,0}
+    \lstset{language=[LaTeX]TeX,
+    texcsstyle=*\color{winered},}   
+\end{lstlisting}
+
+
+\begin{itemize}
+    \item 由 \href{https://github.com/VincentMVV}{VincentMVV} 提供的意大利语翻译 \lstinline{lang=it}，相关讨论见 \href{https://github.com/ElegantLaTeX/ElegantBook/issues/85}{Italian translation}；
+    \item 由 \href{https://github.com/abfek66}{abfek66} 提供的法语翻译 \lstinline{lang=fr}，相关讨论见 \href{https://github.com/ElegantLaTeX/ElegantBook/issues/85}{Italian translation}；
+    % \item 由 \href{https://github.com/stultus}{stultus} 提供的马拉雅拉姆语翻译 \lstinline{lang=}，相关讨论见 \href{https://github.com/ElegantLaTeX/ElegantBook/issues/90}{Malayalam translation}；
+    \item 由 \href{https://github.com/inktvis75}{inktvis75} 提供的荷兰语翻译 \lstinline{lang=nl}，相关讨论见 \href{https://github.com/ElegantLaTeX/ElegantBook/issues/108}{Dutch Translation}；
+    \item 由 \href{https://github.com/palkotamas}{palkotamas} 提供的匈牙利语翻译 \lstinline{lang=hu}，相关讨论见 \href{https://github.com/ElegantLaTeX/ElegantBook/issues/111}{Hungarian translation}；
+    \item 由 Lisa 提供的德语翻译 \lstinline{lang=de}，相关讨论见 \href{https://github.com/ElegantLaTeX/ElegantBook/issues/113}{Deutsch translation}；
+    \item 由 Gustavo A. Corradi 提供的西班牙语的翻译 \lstinline{lang=es}，相关讨论见 \href{https://github.com/ElegantLaTeX/ElegantBook/issues/133}{Spanish translation}；
+    \item 由 \href{https://github.com/Altantsooj}{Altantsooj} 提供的蒙古语的翻译 \lstinline{lang=mn}，相关讨论见 \href{https://github.com/ElegantLaTeX/ElegantBook/issues/137}{Mongolian translation}；
+    \item 由 \href{https://github.com/inusturbo}{inusturbo} 提供的日本语的翻译 \lstinline{lang=jp}，相关讨论见 \href{https://github.com/ElegantLaTeX/ElegantBook/issues/172}{Japanese Translation}。
+  \end{itemize}
+
+  \section{da}
+  大家好，我叫叛国地方，今年21岁来自江苏省莲运弓i按
+
+  \chapter{这是新的章节}
+
+
+  

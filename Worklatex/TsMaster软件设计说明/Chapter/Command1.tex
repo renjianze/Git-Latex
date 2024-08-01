@@ -1,0 +1,88 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%自己添加的   不要动
+
+
+% \extrainfo{注意：本模板自 2023 年 1 月 1 日开始，不再更新和维护！}
+\setcounter{tocdepth}{3}
+% 本文档命令
+\renewcommand{\baselinestretch}{1.75}     %% 开始document之后立即执行
+\newcommand{\ccr}[1]{\makecell{{\color{#1}\rule{1cm}{1cm}}}}
+\definecolor{customcolor}{RGB}{32,178,170}
+\colorlet{coverlinecolor}{customcolor}
+\usepackage{cprotect}
+\addbibresource[location=local]{reference.bib} % 参考文献，不要删除
+\usepackage{metalogo} % 标志命令
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%    多级列表
+%  \usepackage{enumerate}
+%  \usepackage{enumitem}
+\usepackage{tasks}
+\settasks{
+	label = \Alph*.,
+	label-offset={0.4em},
+	label-align = left,
+	column-sep = {10pt},
+	label-width = 2ex,
+	item-indent = {40pt},
+	before-skip = {-0.7em},
+	after-skip ={-0.7em},
+}
+% \setitemize[1]{itemsep=0pt,partopsep=0pt,parsep=\parskip,topsep=5pt}
+% \setenumerate[1]{label=\arabic*., leftmargin=2em}
+% \setenumerate[2]{label=\alph*., leftmargin=2em}
+% \setenumerate[3]{label=\roman*., leftmargin=2em}
+% \setenumerate[4]{label=\Alph*., leftmargin=2em}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%                                  图片
+% \usepackage{caption}    %图片的cap
+\usepackage{subcaption}
+% \usepackage{pifont}
+\newcommand{\cmark}{\ding{51}} % 打勾符号
+\newcommand{\xmark}{\ding{55}} % 打叉符号
+\newcommand{\Tquestion}[1]{#1 \hfill\cmark}
+\newcommand{\Fquestion}[1]{#1 \hfill\xmark}
+\newcommand{\jiexi}[1]{{\color{myorange}\kaishu {\bf 解析：}{#1}}}
+\newcommand{\daan}[2]{\vspace{0.25em}{\color{myorange}\kaishu {\bf 答案：}{#1} \hspace{0.5em} {#2} }}
+\newcommand{\choosenum}{1}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%                 表格类
+\usepackage{array}
+% \usepackage{booktabs}
+\usepackage{tabularx}
+\usepackage{longtable}
+% \usepackage{multirow}
+% \RequirePackage{multicol,multirow}
+\usepackage{warpcol}
+\usepackage{siunitx} % For S column type
+
+% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% 测试代码
+
+% \usepackage{listings}
+
+% \renewcommand{\ttdefault}{cmtt}
+% \lstdefinestyle{mystyle}{
+%   basicstyle=%
+%     \ttfamily
+%     \lst@ifdisplaystyle\small\fi
+% }
+% \lstset{basicstyle=\ttfamily,style=mystyle,breaklines=true}
+% \definecolor{lightgrey}{rgb}{0.9,0.9,0.9}
+% \definecolor{frenchplum}{RGB}{190,20,83}
+% \definecolor{winered}{rgb}{0.5,0,0}
+% \lstset{language=[LaTeX]TeX,
+%   texcsstyle=*\color{winered},
+% %   numbers=left,  %% 行号
+%   numbers=none,
+%   mathescape=false,
+%   breaklines=true,
+%   keywordstyle=\color{winered},
+%   commentstyle=\color{gray},
+%   emph={printf,elegantpaper,fontenc,fontspec,xeCJK,citestyle,FiraMono,xunicode,figure,fig,image,img,table,itemize,enumerate,ctex,microtype,description,times,booktabs,tabular,PDFLaTeX,XeLaTeX,type1cm,BibTeX,device,color,mode,lang,amsthm,tcolorbox,titlestyle,cite,ctex,listings,base,math,scheme,toc,esint,chinesefont,amsmath,bibstyle,natbib,pgfornament,addbibresource,printbibliography},
+%   emphstyle={\color{frenchplum}},
+%   morekeywords={DeclareSymbolFont,SetSymbolFont,toprule,midrule,bottomrule,institute,version,includegraphics,setmainfont,setsansfont,setmonofont ,setCJKmainfont,setCJKsansfont,setCJKmonofont,RequirePackage,figref,tabref,email,maketitle,keywords,definecolor,extrainfo,logo,cover,subtitle,appendix,chapter,section,hypersetup,mainmatter,frontmatter,tableofcontents,elegantpar,heiti,kaishu,lstset,pagecolor,zhnumber,marginpar,part,equote,marginnote,bioinfo,datechange,listofchange,lvert,lastpage,songti,heiti,fangsong,setCJKfamilyfont,textbf,elegantnewtheorem,thmcnt,colorlet,usesamecnt},
+%   frame=single,
+%   tabsize=2,
+%   rulecolor=\color{structurecolor},
+%   framerule=0.2pt,
+%   columns=flexible,
+%   % backgroundcolor=\color{lightgrey}
+% }
+% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
