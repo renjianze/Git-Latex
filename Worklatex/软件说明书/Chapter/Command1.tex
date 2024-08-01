@@ -1,0 +1,29 @@
+\newcommand{\ccr}[1]{\makecell{{\color{#1}\rule{1cm}{1cm}}}}
+
+
+\usepackage{tasks}
+\settasks{
+	label = \Alph*.,
+	label-offset={0.4em},
+	label-align = left,
+	column-sep = {10pt},
+	label-width = 2ex,
+	item-indent = {40pt},
+	before-skip = {-0.7em},
+	after-skip ={-0.7em},
+}
+
+% \usepackage{graphicx}
+\usepackage{caption}
+\usepackage{enumerate}
+\usepackage{pifont}
+\usepackage{hyperref} 
+\newcommand{\cmark}{\ding{51}} % 打勾符号
+\newcommand{\xmark}{\ding{55}} % 打叉符号
+\newcommand{\Tquestion}[1]{#1 \hfill\cmark}
+\newcommand{\Fquestion}[1]{#1 \hfill\xmark}
+\newcommand{\jiexi}[1]{{\color{myorange}\kaishu {\bf 解析：}{#1}}}
+\newcommand{\daan}[2]{\vspace{0.25em}{\color{myorange}\kaishu {\bf 答案：}{#1} \hspace{0.5em} {#2} }}
+
+\newcommand{\choosenum}{1}
+% \graphicspath{{Figure/User}}
