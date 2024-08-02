@@ -19,3 +19,16 @@
 
 
 
+## Q2模板中参考文献倒叙的问题
+
+使用`bibtex`编译参考文献导致参考文献序号倒叙，引入`biblatex`宏包的时候需要设置以下选项；
+
+```latex
+ \RequirePackage[
+  backend=\ELEGANT@bibend,
+  citestyle=\ELEGANT@citestyle,
+  bibstyle=\ELEGANT@bibstyle,
+  sorting=none      %% 发现的bug 解决倒叙问题
+  ]{biblatex}
+```
+

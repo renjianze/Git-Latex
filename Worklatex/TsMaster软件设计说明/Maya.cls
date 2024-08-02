@@ -11,7 +11,13 @@
 \ProvidesClass{Maya}[2022/12/31 v4.5 ElegantBook document class]
 
 
-%%%
+%%%%%%%%%%%%%%%%%  红包需要放前面
+\RequirePackage[utf8]{inputenc}
+
+
+%%%%%%%%%%%%%%%%%%
+
+
 \RequirePackage{kvoptions}
 \RequirePackage{etoolbox}
 \SetupKeyvalOptions{family=ELEGANT, prefix=ELEGANT@, setkeys=\kvsetkeys}
@@ -428,11 +434,12 @@
 \RequirePackage[center,pagestyles]{titlesec}
 \RequirePackage[title,titletoc,header]{appendix}
 
-
-\RequirePackage[
+  \RequirePackage[
   backend=\ELEGANT@bibend,
   citestyle=\ELEGANT@citestyle,
-  bibstyle=\ELEGANT@bibstyle]{biblatex}
+  bibstyle=\ELEGANT@bibstyle,
+  sorting=none      %% 发现的bug 解决倒叙问题
+  ]{biblatex}
 
 \ifdefstring{\ELEGANT@lang}{cn}{
   \renewcommand{\baselinestretch}{1.3}
