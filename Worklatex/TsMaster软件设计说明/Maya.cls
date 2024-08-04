@@ -403,8 +403,8 @@
 \setlist{nolistsep}
 
 \RequirePackage[labelfont={bf,color=structurecolor}]{caption} 
-\captionsetup[table]{skip=3pt}
-\captionsetup[figure]{skip=3pt}
+\captionsetup[table]{skip=6pt}
+\captionsetup[figure]{skip=6pt}
 
 \AtBeginDocument{
   \setlength{\abovedisplayskip}{3pt}
