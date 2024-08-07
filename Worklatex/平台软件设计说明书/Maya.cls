@@ -364,7 +364,8 @@
 \definecolor{myred1}{RGB}{255,210,230}%
 \definecolor{myred2}{RGB}{186,105,200}%
 \definecolor{mycover}{RGB}{135,200,235}%
-\definecolor{mypurple}{RGB}{95,72,121}%
+\definecolor{mypurple1}{RGB}{95,72,121}%
+\definecolor{mygray}{RGB}{180,180,180}%
 \newcommand{\setchaptercolor}{\color{structurecolor}}  %% 三级标题的颜色设置
 \newcommand{\setsectioncolor}{\color{myorange}}
 \newcommand{\setsubsectioncolor}{\color{mygreen}}
