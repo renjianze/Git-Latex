@@ -32,3 +32,20 @@
   ]{biblatex}
 ```
 
+
+
+## P1增加伪代码
+
+```latex
+\usepackage{algorithm}
+\usepackage{algorithmic}% 这个包和下面这个包冲突
+% \usepackage{algpseudocode} %
+% \usepackage{algorithm}
+\usepackage{lineno}
+% \setlength{\algorithmicindent}{1em} % 调整缩进
+%以下参考CSDN_ Latex写算法得伪代码排版
+% \floatname{algorithm}{算法}
+\renewcommand{\algorithmicrequire}{\textbf{Input:}}
+\renewcommand{\algorithmicensure}{\textbf{Output:}}
+```
+
