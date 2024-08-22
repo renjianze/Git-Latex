@@ -102,7 +102,7 @@ CC（Connection Confirmation）功能\cite{GB18487_1}：CC 信号负责最终确
 \section{Modules Ports}
 
 
-\section{Design Contents}
+\section{Design Contents\_交流充电}
 
 % (1) 车辆控制装置测量检测点 2 有无 12 V CP 信号。如有
 % 则标志着车辆插头与车辆插座已连接，控制导引电
@@ -182,14 +182,66 @@ CC（Connection Confirmation）功能\cite{GB18487_1}：CC 信号负责最终确
                     \text{当 $a$ 较大时，滤波毛刺大，灵敏度高}
                 \end{cases}
             \end{equation}
-        \subsubsection*{RC电阻测量}
 
-        \begin{figure}[!htbp]
-            \centering
-            \includegraphics[width = 0.82\textwidth]{C11}
-            \caption{车辆接口连接状态及Rc阻值\cite{GB18487_1}}
-            \label{fig:C11}
-        \end{figure}
+        \subsubsection*{陷波滤波器}
+            1.连续时间传递函数：
+                \begin{equation}
+                    N(s) = \frac{s^2 + 2\cdot g_\mathrm{min} \cdot \mathrm{freq} \cdot \mathrm{damp}\cdot s + \mathrm{freq}^2}{s^2 + 2\cdot \mathrm{freq} \cdot \mathrm{damp} \cdot s + \mathrm{freq}^2}
+                    \label{eq:Cxb}
+                \end{equation}
+          
+            2. 令$s = \frac{1-z^{-1}}{T_s}$, $T_s$表示采样周期: 
+                \begin{equation}
+                    N(z) = \frac{1 - \left(2 + 2 \cdot \text{damp} \cdot \text{freq} \cdot T_s\right)z^{-1} + \left(1 - 2 \cdot \text{damp} \cdot \text{freq} \cdot T_s + \text{freq}^2 \cdot T_s^2\right)z^{-2}}{1 - \left(2 + 2 \cdot g_{\text{min}} \cdot \text{damp} \cdot \text{freq} \cdot T_s\right)z^{-1} + \left(1 - 2 \cdot g_{\text{min}} \cdot \text{damp} \cdot \text{freq} \cdot T_s + \text{freq}^2 \cdot T_s^2\right)z^{-2}}
+                \end{equation}
+
+            3. 差分方程形式：
+            \begin{equation}
+                y(k) = b_0 \cdot x(k) + b_1 \cdot x(k-1) + b_2 \cdot x(k-2) - a_1 \cdot y(k-1) - a_2 \cdot y(k-2)
+            \end{equation}
+            其中：
+                \begin{equation}
+                    \begin{aligned}
+                        a_1 &= 2 + 2 \cdot \text{damp} \cdot \text{freq} \cdot T_s \\
+                        a_2 &= 1 - 2 \cdot \text{damp} \cdot \text{freq} \cdot T_s + \text{freq}^2 \cdot T_s^2 \\
+                        b_0 &= 1 \\
+                        b_1 &= 2 + 2 \cdot g_{\text{min}} \cdot \text{damp} \cdot \text{freq} \cdot T_s \\
+                        b_2 &= 1 - 2 \cdot g_{\text{min}} \cdot \text{damp} \cdot \text{freq} \cdot T_s + \text{freq}^2 \cdot T_s^2.
+                        \end{aligned}
+                \end{equation}
+            举例：
+            \begin{equation}
+                \begin{aligned}
+                    &\text{damp} = 30 \\
+                    &\text{freq} = 50 \cdot  2\pi \\
+                    &g_{\text{min}} =  0.01\\
+                    &T_s = 0.001.
+                    \end{aligned}
+            \end{equation}
+        
+        \subsubsection*{双线性变换陷波滤波器}
+            令 $s = \frac{2}{T_s}\frac{1-z^{-1}}{1+z^{-1}}$, 带入连续模型(\ref{eq:Cxb}):
+        \begin{lstlisting}
+            % 定义s变量
+            s = tf('s');
+            % 例如：定义一个二阶系统传递函数
+            freq = 50*2*pi;       % 频率
+            damp = 3;             
+            gmin = 0.01;
+            H_s = (s^2 + 2*damp*freq*gmin*s + freq^2) / (s^2 + 2*damp*freq*s + freq^2)
+            Ts = 0.001;  % 采样时间
+            H_z = c2d(H_s, Ts, 'tustin')
+        \end{lstlisting}
+        
+
+        \subsubsection*{RC电阻测量}
+            \begin{figure}[H]
+                \centering
+                \includegraphics[width = 0.82\textwidth]{CC检测电路}
+                \caption{CC电压检测}
+                \label{fig:C13}
+            \end{figure}
+
 
         \begin{table}[!htbp]
             \renewcommand{\arraystretch}{1.3}
@@ -216,24 +268,45 @@ CC（Connection Confirmation）功能\cite{GB18487_1}：CC 信号负责最终确
 
        \begin{example}
          假设充电机的检测电压为$V_{Vel} = 5 \mathrm{V}$, 预设电阻为 $R_{Vel} = 500 \Omega$。
-         \begin{table}[h]
-            \renewcommand{\arraystretch}{1.3}
-            \centering
-            \caption{车辆连接状态及RC阻值}
-            \begin{tabular}{ccccc}   
-                 \toprule
-                 状态  & RC  & R4 & $V_{cc}$ & 连接状态及额定电流\\    
-                 \midrule
-                 状态A  & -  & - & 5 V &   \\
-                 状态C  & 1.5 k$\Omega$  & - & 3.75 V &  10 A \\
-                 状态D  & 680 $\Omega$  & - &  2.88 V &  16 A  \\
-                 状态E  & 220 $\Omega$ & - &   1.53 V &  32 A  \\
-                 状态F  & 100 $\Omega$ & - &   0.88 V &  63 A  \\
-                 状态B  & \multicolumn{2}{c}{3.3$\thicksim$ 3.52 k$\Omega$} & 4.34 V &车辆接口处于半连接状态\\
-                 \bottomrule
-            \end{tabular}
-            \label{tab:RC1}
-       \end{table}
+            \begin{table}[H]
+                \renewcommand{\arraystretch}{1.3}
+                \centering
+                \caption{车辆连接状态及RC阻值}
+                \begin{tabular}{ccccc}   
+                    \toprule
+                    状态  & RC  & R4 & $V_{cc}$ & 连接状态及额定电流\\    
+                    \midrule
+                    状态A  & -  & - & 5 V &   \\
+                    状态C  & 1.5 k$\Omega$  & - & 3.75 V &  10 A \\
+                    状态D  & 680 $\Omega$  & - &  2.88 V &  16 A  \\
+                    状态E  & 220 $\Omega$ & - &   1.53 V &  32 A  \\
+                    状态F  & 100 $\Omega$ & - &   0.88 V &  63 A  \\
+                    状态B  & \multicolumn{2}{c}{3.3$\thicksim$ 3.52 k$\Omega$} & 4.34 V &车辆接口处于半连接状态\\
+                    \bottomrule
+                \end{tabular}
+                \label{tab:RC1}
+            \end{table}
+
+            状态与检测电压之间的关系：
+            \begin{table}[H]
+                \renewcommand{\arraystretch}{1.3}
+                \centering
+                \caption{ 状态与检测电压之间的关系}
+                \begin{tabular}{cccc}   
+                    \toprule
+                    CCM\_CC\_ACStatus  &  CC\_Current\_Limit$i$  & 状态描述 & CCM\_CC\_MaxACCurent(0.1 A)\\    
+                    \midrule
+                    0  &  5 V    &  AC\_DisConnect  & 0 \\
+                    1  &  3.75 V &   ChargConnectState\_AC10A & 100\\
+                    2  &  2.88 V &   ChargConnectState\_AC16A & 160  \\
+                    3  &  1.53 V &   ChargConnectState\_AC32A & 320 \\
+                    4  &  0.88 V &   ChargConnectState\_AC63A & 630 \\
+                    5  &  4.34 V &   AC\_SemiConnect          &    0\\
+                    6  &  其他电压值 & AC\_ErrConnect          & 0\\
+                    \bottomrule
+                \end{tabular}
+                \label{tab:RC2}
+            \end{table}
        \end{example}
 
     
@@ -245,56 +318,62 @@ CC（Connection Confirmation）功能\cite{GB18487_1}：CC 信号负责最终确
 
 
 
+\subsection{交流充电控制流程}
+\begin{minipage}{0.45\textwidth}
+    \begin{figure}[H]
+        \centering
+        \includegraphics[width = 0.9\textwidth]{CC流程图}
+        \caption{CC流程图}
+        \label{fig:CClc}    
+    \end{figure}
+\end{minipage}
+   
+
+    \begin{algorithm}[H] 
+        % \SetAlgoLined
+        \caption{连接确认(Connection Confirmation)——交流充电} 
+        \label{alg3} 
+        \makebox[1\textwidth][c]{ % 设置宽度为文本宽度并居中
+        \begin{minipage}{0.91\textwidth} % 设置算法宽度为 80% 文本宽度
+        \renewcommand{\baselinestretch}{1.5} % 设置行距为 1.5 倍
+        \selectfont
+        \begin{algorithmic}[1] % [1] 表示显示行号
+            \REQUIRE ADC\_CC\_Current, CC\_Current\_Limit$i$($i=0,1,2,3,4,5$);
+            \ENSURE CCM\_CC\_Status, CCM\_CC\_MaxACCurent;
+            \STATE Begin
+            \STATE 获取CC电流AD采样值:ADC\_CC\_Current;
+            \STATE 1)计算CC原始采样电流:Raw\_CC\_Current,根据公式(\ref{eq:CC1});
+            \STATE 2)计算CC滤波采样电流: Samp\_CC\_Current,根据公式(\ref{eq:CC4});
+            \STATE 3)判断连接状态,根据表(\ref{tab:RC2});
+            \IF{Samp\_CC\_Current == CC\_Current\_Limit$i$ $\pm \, 0.1$ V } 
+                \STATE CCM\_CC\_ACStatus = $i$
+            \ELSIF{Samp\_CC\_Current != CC\_Current\_Limit$i$}
+                \STATE CCM\_CC\_ACStatus = 6 连接异常
+            \ENDIF
+            \STATE End 
+        \end{algorithmic} 
+        \end{minipage}
+        }
+    \end{algorithm}
 
 
 
 
-\begin{algorithm} 
-    \caption{连接确认(Connection Confirmation)——交流充电} 
-    \label{alg3} 
-    \makebox[1\textwidth][c]{ % 设置宽度为文本宽度并居中
-    \begin{minipage}{0.91\textwidth} % 设置算法宽度为 80% 文本宽度
-    \renewcommand{\baselinestretch}{1.5} % 设置行距为 1.5 倍
-    \selectfont
-    \begin{algorithmic}[1] % [1] 表示显示行号
-        \REQUIRE ADC\_CC\_Current, CC\_Current\_Limit$i$($i=1,2,3,4$);
-        \ENSURE CCM\_CC\_Status, CCM\_CC\_MaxACCurent;
-        \STATE 获取CC电流AD采样值:ADC\_CC\_Current;
-        \STATE 1)计算CC原始采样电流:Raw\_CC\_Current,根据(\ref{eq:CC1});
-        \STATE 2)计算CC滤波采样电流: Samp\_CC\_Current,根据(\ref{eq:CC4});
-        \IF{$n < 0$} 
-            \STATE $X \gets 1 / x$ 
-            \STATE $N \gets -n$ 
-        \ELSE 
-            \STATE $X \gets x$ 
-            \STATE $N \gets n$ 
-        \ENDIF 
-        \WHILE{$N \neq 0$} 
-            \IF{$N$ 是偶数} 
-                \STATE $X \gets X \times X$ 
-                \STATE $N \gets N / 2$ 
-            \ELSE 
-                \STATE $y \gets y \times X$ 
-                \STATE $N \gets N - 1$ 
-            \ENDIF 
-        \ENDWHILE 
-        \STATE \textbf{switch} $n$ \textbf{do} % 开始 switch-case 结构
-        \STATE \quad \textbf{case} 1:
-            \STATE \quad \quad 执行操作1;
-        \STATE \quad \textbf{case} 2:
-            \STATE \quad \quad 执行操作2;
-        \STATE \quad \textbf{case} 3:
-            \STATE \quad \quad 执行操作3;
-        \STATE \quad \textbf{case} 4:
-            \STATE \quad \quad 执行操作4;
-        \STATE \quad \textbf{default}:
-            \STATE \quad \quad 执行默认操作;
-    \STATE \textbf{end switch}
-    \end{algorithmic} 
-    \end{minipage}
-    }
-\end{algorithm}
 
 
+
+
+
+
+
+
+
+\section{Design Contents\_直流充电}
+    \begin{figure}[!htbp]
+        \centering
+        \includegraphics[width = 0.82\textwidth]{C12}
+        \caption{直流充电\cite{GB18487_1}}
+        \label{fig:C12}
+    \end{figure}
 
 
