@@ -135,7 +135,7 @@ CC（Connection Confirmation）功能\cite{GB18487_1}：CC 信号负责最终确
     \centering
     \includegraphics[width = 0.82\textwidth]{C4}
     \caption{交流充电模式2连接方式B\cite{GB18487_1}}
-    \label{fig:C3}
+    \label{fig:C4}
 \end{figure}
 
 
@@ -284,7 +284,7 @@ CC（Connection Confirmation）功能\cite{GB18487_1}：CC 信号负责最终确
                     状态B  & \multicolumn{2}{c}{3.3$\thicksim$ 3.52 k$\Omega$} & 4.34 V &车辆接口处于半连接状态\\
                     \bottomrule
                 \end{tabular}
-                \label{tab:RC1}
+                \label{tab:RC2}
             \end{table}
 
             状态与检测电压之间的关系：
@@ -305,7 +305,7 @@ CC（Connection Confirmation）功能\cite{GB18487_1}：CC 信号负责最终确
                     6  &  其他电压值 & AC\_ErrConnect          & 0\\
                     \bottomrule
                 \end{tabular}
-                \label{tab:RC2}
+                \label{tab:RC3}
             \end{table}
        \end{example}
 
@@ -319,15 +319,69 @@ CC（Connection Confirmation）功能\cite{GB18487_1}：CC 信号负责最终确
 
 
 \subsection{交流充电控制流程}
-\begin{minipage}{0.45\textwidth}
-    \begin{figure}[H]
-        \centering
-        \includegraphics[width = 0.9\textwidth]{CC流程图}
-        \caption{CC流程图}
-        \label{fig:CClc}    
-    \end{figure}
-\end{minipage}
-   
+    \begin{table}[H]
+        \begin{minipage}[p]{0.46\textwidth} 
+            \centering 
+            \includegraphics[width=60mm]{CC流程图} 
+        \end{minipage}
+            \begin{minipage}[p]{0.46\textwidth}
+            \centering
+            \renewcommand{\arraystretch}{1.3}
+                \begin{tabular}{|c|c|c|c|}
+                    \specialrule{0.2em}{0pt}{0pt} 
+                    \textbf{Input Port} & Range & Data Type & Unit \\
+                    \hline
+                    ADC\_CC\_Voltage& -  & Uint16 & -  \\
+                    \hline
+                    &  & &\\
+                    \specialrule{0.2em}{0pt}{0pt} 
+                    \textbf{Output Port}    &   \multicolumn{3}{c|}{}\\
+                    \hline
+                      CCM\_CC\_ACMaxCurrent                      &  & Uint16 &  0.1 A\\
+                    \hline
+                      CCM\_CC\_ACConnectStatus                      &  & Uint8  & \\
+                    \hline
+                    &  & &\\
+                    \specialrule{0.2em}{0pt}{0pt} 
+                    \textbf{Parameter Port}    &   \multicolumn{3}{c|}{}\\
+                    \hline
+                        CC\_Voltage\_Factor                      &  & Folat32 & \\
+                        \hline
+                        CC\_Voltage\_FilterFactor                & 0$\sim$1 & Folat16 & \\
+                        \hline
+                        CC\_Voltage\_Limit$i$(i=0$\sim$5 )       & 0$\sim$5 & Folat32 & 1 V\\
+                    \specialrule{0.2em}{0pt}{0pt} 
+                \end{tabular} 
+            \end{minipage}
+        \caption{\textcolor{red}{(a)CC流程图. (b)输入输出接口.}} 
+        \label{tab:figtab1} 
+    \end{table}
+
+    % \begin{minipage}{0.45\textwidth}
+    %     \centering
+    %     \includegraphics[width=0.9\textwidth]{CC流程图}
+    %     % \caption{CC流程图}
+    %     % \label{fig:CClc}    
+    % \end{minipage}
+    % \hfill
+    % \begin{minipage}{0.45\textwidth}
+    %     \renewcommand{\arraystretch}{1.3}
+    %     % \captionof{table}{国内外电动主要传导式充电系统标准}
+    %     \begin{tabular}{c|c|c|c|c|c|c}
+    %         \specialrule{0.2em}{0pt}{0pt} 
+    %         \multicolumn{2}{c|}{类别} & 2 & 3 & 4& 5 & 6\\
+    %         \hline
+    %         \multicolumn{2}{c|}{类别} & 2 & 3 & 4& 5 & 6\\
+    %         \hline
+    %         \multirow{3}{*}{合并的行} & 1 &2 &3&4&5&6\\
+    %                                 & 1 &2 &3&4&5&6\\
+    %                                 & 1 &2 &3&4&5&6\\
+    %         \hline
+    %         \multicolumn{2}{c|}{类别} & 2 & 3 & 4& 5 & 6\\
+    %         \specialrule{0.2em}{0pt}{0pt} 
+    %     \end{tabular} 
+    % \end{minipage}
+
 
     \begin{algorithm}[H] 
         % \SetAlgoLined
@@ -360,20 +414,52 @@ CC（Connection Confirmation）功能\cite{GB18487_1}：CC 信号负责最终确
 
 
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% 交流放电 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 
+\clearpage
+    \section{Design Contents\_交流放电}
+    \textcolor{myred}{\textbf{放电模式1.1 交流V2L}}\cite{GB18487_4}\\
+     交流V2L放电使用传导连接组件连接用电负荷，能量传输过程中采用单相或三相放电，放电车辆总放电电流单相不超过32A，三相不超过63A。传导连接组件如有多路输出，每路输出宜分别具备过流保护,如图(\ref{fig:V2L})。
+        \begin{figure}[H]
+            \centering
+            \includegraphics[width = 0.9\textwidth]{V2L控制引导}
+            \caption{V2L 模式控制导引电路原理图}
+            \label{fig:V2L}
+        \end{figure}
+    \textcolor{myred}{\textbf{放电模式1.2 交流V2V}}\cite{GB18487_4}\\
+    模式1.2用于放电车辆对电动汽车交流放电，能量传输过程中采用单相或三相电，单相放电不超过32A，三相放电不超过63A。
+    放电引导电路如图(\ref{fig:V2V}),提供放电控制功能。放电接口应符合GB/T20234.2的规定\cite{GB18487_2}。%从放电车辆到充电车辆宜提供保护接地导体，且具备绝缘监测功能。
+        \begin{figure}[H]
+            \centering
+            \includegraphics[width = 0.9\textwidth]{V2V控制引导}
+            \caption{V2V 的控制导引电路原理图}
+            \label{fig:V2V}
+        \end{figure}
 
-
-
-
-
-
-\section{Design Contents\_直流充电}
-    \begin{figure}[!htbp]
-        \centering
-        \includegraphics[width = 0.82\textwidth]{C12}
-        \caption{直流充电\cite{GB18487_1}}
-        \label{fig:C12}
-    \end{figure}
+        \begin{lstlisting}[language = matlab]
+            Vvel=5;
+            Rvel =800;
+            
+            G2V_Rc= [1500,680,220,100,3300,3500];   %放电RC电阻计算
+                V1 = G2V_Rc(1)/(G2V_Rc(1)+Rvel) * Vvel;
+                V2 = G2V_Rc(2)/(G2V_Rc(2)+Rvel) * Vvel;
+                V3 = G2V_Rc(3)/(G2V_Rc(3)+Rvel) * Vvel;
+                V4 = G2V_Rc(4)/(G2V_Rc(4)+Rvel) * Vvel;
+                V51 = G2V_Rc(5)/(G2V_Rc(5)+Rvel) * Vvel;
+                V52 = G2V_Rc(6)/(G2V_Rc(6)+Rvel) * Vvel;
+                V_G2V = [V1, V2, V3,V4,V51,V52]'
+                      
+            V2L_Rc= [2700,2000,1000,470,3300,3500]; %放电RC电阻计算
+                V11 = V2L_Rc(1)/(V2L_Rc(1)+Rvel) * Vvel;
+                V22 = V2L_Rc(2)/(V2L_Rc(2)+Rvel) * Vvel;
+                V33 = V2L_Rc(3)/(V2L_Rc(3)+Rvel) * Vvel;
+                V44 = V2L_Rc(4)/(V2L_Rc(4)+Rvel) * Vvel;
+                V551 = V2L_Rc(5)/(V2L_Rc(5)+Rvel) * Vvel;
+                V552 = V2L_Rc(6)/(V2L_Rc(6)+Rvel) * Vvel;
+                V_V2L = [V11, V22, V33,V44,V551,V552]'
+            
+            Vall = sort([V_G2V;V_V2L])
+        \end{lstlisting}
 
 
