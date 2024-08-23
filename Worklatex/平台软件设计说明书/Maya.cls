@@ -363,6 +363,7 @@
 \definecolor{mybule}{RGB}{51,169,201}%
 \definecolor{myred1}{RGB}{255,210,230}%
 \definecolor{myred2}{RGB}{186,105,200}%
+\definecolor{myred3}{rgb}{0.62,0,0}
 \definecolor{mycover}{RGB}{135,200,235}%
 \definecolor{mypurple1}{RGB}{95,72,121}%
 \definecolor{mygray}{RGB}{180,180,180}%

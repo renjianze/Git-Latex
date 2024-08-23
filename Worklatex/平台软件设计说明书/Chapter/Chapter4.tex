@@ -44,8 +44,8 @@ CC（Connection Confirmation）功能\cite{GB18487_1}：CC 信号负责最终确
     在交流充电系统中，CP（Control Pilot）信号和CC（Connection Confirmation）导线的电阻共同作用于确定最大充电电流。这是为了确保充电过程的安全性和兼容性。让我们分别来看CP和CC在这一过程中的角色及它们之间的关系。
 
  \begin{enumerate}
-    \item  确认充电枪是否插入到位,防止在插头未完全插入的情况下启动充电;
-    \item  通过检测CC电阻值，车辆和充电桩可以确认充电枪是否正确插入，并确定允许的最大充电电流。
+    \item  \textcolor{myred3}{确认充电枪是否插入到位},防止在插头未完全插入的情况下启动充电;
+    \item  通过检测CC电阻值，车辆和充电桩可以确认充电枪是否正确插入，并\textcolor{myred3}{确定允许的最大充电电流}。
     \item 优先级机制：在实际应用中，CC 电阻的限流机制通常是最高优先级的。如果 CC
     电阻表明电缆只支持较小的电流，那么即使 CP 信号允许更大的电流，系统也会
     优先遵循 CC 导线的限流判断。
@@ -144,7 +144,7 @@ CC（Connection Confirmation）功能\cite{GB18487_1}：CC 信号负责最终确
 \subsubsection*{电流因子}
         计算电流的原始采样值：
             \begin{equation}
-                \mathrm{Raw\_CC\_Current} = \mathrm{CC\_Current\_Factor} \times  \mathrm{ADC\_CC\_Current}
+                \mathrm{Raw\_CC\_Voltage} = \mathrm{CC\_Voltage\_Factor} \times  \mathrm{ADC\_CC\_Voltage}
                 \label{eq:CC1}
             \end{equation}
 
@@ -171,8 +171,8 @@ CC（Connection Confirmation）功能\cite{GB18487_1}：CC 信号负责最终确
             \end{equation}
         \textcolor{red}{CC\_Current滤波：}
             \begin{enumerate}[label={}]
-                \item $y = \mathrm{Samp\_CC\_Current} $;
-                \item $x = \mathrm{Raw\_CC\_Current} $;
+                \item $y = \mathrm{Samp\_CC\_Voltage} $;
+                \item $x = \mathrm{Raw\_CC\_Voltage} $;
                 \item $a = \mathrm{CC\_Current\_FilterFactor}$
             \end{enumerate}
         系数$a$决定了滤波器的带宽：
@@ -221,7 +221,7 @@ CC（Connection Confirmation）功能\cite{GB18487_1}：CC 信号负责最终确
         
         \subsubsection*{双线性变换陷波滤波器}
             令 $s = \frac{2}{T_s}\frac{1-z^{-1}}{1+z^{-1}}$, 带入连续模型(\ref{eq:Cxb}):
-        \begin{lstlisting}
+        \begin{lstlisting}[language = matlab]
             % 定义s变量
             s = tf('s');
             % 例如：定义一个二阶系统传递函数
@@ -246,7 +246,7 @@ CC（Connection Confirmation）功能\cite{GB18487_1}：CC 信号负责最终确
         \begin{table}[!htbp]
             \renewcommand{\arraystretch}{1.3}
             \centering
-            \caption{车辆连接状态及RC阻值}
+            \caption{车辆连接状态及RC阻值\cite{GB18487_1}}
             \begin{tabular}{ccccc}   
                  \toprule
                  状态  & RC  & R4 & S3 & 连接状态及额定电流\\    
@@ -294,19 +294,29 @@ CC（Connection Confirmation）功能\cite{GB18487_1}：CC 信号负责最终确
                 \caption{ 状态与检测电压之间的关系}
                 \begin{tabular}{cccc}   
                     \toprule
-                    CCM\_CC\_ACStatus  &  CC\_Current\_Limit$i$  & 状态描述 & CCM\_CC\_MaxACCurent(0.1 A)\\    
+                    CCM\_CC\_ACStatus  &  CC\_Voltage\_Limit$i$  & 状态描述 & CCM\_CC\_MaxACCurent(0.1 A)\\    
                     \midrule
-                    0  &  5 V    &  AC\_DisConnect  & 0 \\
-                    1  &  3.75 V &   ChargConnectState\_AC10A & 100\\
+                    0  &  5 V    &   AC\_DisConnect  & 0 \\
+                    1  &  3.75 V &    ChargConnectState\_AC10A & 100\\
                     2  &  2.88 V &   ChargConnectState\_AC16A & 160  \\
                     3  &  1.53 V &   ChargConnectState\_AC32A & 320 \\
                     4  &  0.88 V &   ChargConnectState\_AC63A & 630 \\
-                    5  &  4.34 V &   AC\_SemiConnect          &    0\\
+                    5  &  4.34 V &    AC\_SemiConnect          &    0\\
                     6  &  其他电压值 & AC\_ErrConnect          & 0\\
                     \bottomrule
                 \end{tabular}
                 \label{tab:RC3}
             \end{table}
+            根据不同Rc电阻采样的电压值判断连接状态,采样点为检测点3的电压SAMP\_CC\_Voltage, 更加采样电路预设6个电压等级CC\_Voltage\_Limit$i$($i=0,1,2,3,4,5$):
+                \begin{enumerate}
+                    \item SAMP\_CC\_Voltage == CC\_Voltage\_Limit0 $\pm$ $ \delta $: 交流充电未连接;
+                    \item SAMP\_CC\_Voltage == CC\_Voltage\_Limit1 $\pm$ $ \delta $: 交流充电10 A;
+                    \item SAMP\_CC\_Voltage == CC\_Voltage\_Limit2 $\pm$ $ \delta $: 交流充电16 A;
+                    \item SAMP\_CC\_Voltage == CC\_Voltage\_Limit3 $\pm$ $ \delta $: 交流充电32 A;
+                    \item SAMP\_CC\_Voltage == CC\_Voltage\_Limit4 $\pm$ $ \delta $: 交流充电63 A;
+                    \item SAMP\_CC\_Voltage == CC\_Voltage\_Limit5 $\pm$ $ \delta $: 交流充电半连接;
+                    \item SAMP\_CC\_Voltage != CC\_Voltage\_Limit$i$ $\pm$ $ \delta $: 交流充电连接错误;
+                \end{enumerate} 
        \end{example}
 
     
@@ -339,7 +349,7 @@ CC（Connection Confirmation）功能\cite{GB18487_1}：CC 信号负责最终确
                     \hline
                       CCM\_CC\_ACMaxCurrent                      &  & Uint16 &  0.1 A\\
                     \hline
-                      CCM\_CC\_ACConnectStatus                      &  & Uint8  & \\
+                      CCM\_CC\_ACStatus                      &  & Uint8  & \\
                     \hline
                     &  & &\\
                     \specialrule{0.2em}{0pt}{0pt} 
