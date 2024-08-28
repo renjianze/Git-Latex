@@ -18,4 +18,5 @@ del *.spl
 del *.bbl
 del *.cpt
 del *.pdf
+del *.synctex
 exit

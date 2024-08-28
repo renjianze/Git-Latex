@@ -183,44 +183,44 @@ CC（Connection Confirmation）功能\cite{GB18487_1}：CC 信号负责最终确
                 \end{cases}
             \end{equation}
 
-        \subsubsection*{陷波滤波器}
-            1.连续时间传递函数：
-                \begin{equation}
-                    N(s) = \frac{s^2 + 2\cdot g_\mathrm{min} \cdot \mathrm{freq} \cdot \mathrm{damp}\cdot s + \mathrm{freq}^2}{s^2 + 2\cdot \mathrm{freq} \cdot \mathrm{damp} \cdot s + \mathrm{freq}^2}
-                    \label{eq:Cxb}
-                \end{equation}
+        % \subsubsection*{陷波滤波器}
+            % 1.连续时间传递函数：
+            %     \begin{equation}
+            %         N(s) = \frac{s^2 + 2\cdot g_\mathrm{min} \cdot \mathrm{freq} \cdot \mathrm{damp}\cdot s + \mathrm{freq}^2}{s^2 + 2\cdot \mathrm{freq} \cdot \mathrm{damp} \cdot s + \mathrm{freq}^2}
+            %         \label{eq:Cxb}
+            %     \end{equation}
           
-            2. 令$s = \frac{1-z^{-1}}{T_s}$, $T_s$表示采样周期: 
-                \begin{equation}
-                    N(z) = \frac{1 - \left(2 + 2 \cdot \text{damp} \cdot \text{freq} \cdot T_s\right)z^{-1} + \left(1 - 2 \cdot \text{damp} \cdot \text{freq} \cdot T_s + \text{freq}^2 \cdot T_s^2\right)z^{-2}}{1 - \left(2 + 2 \cdot g_{\text{min}} \cdot \text{damp} \cdot \text{freq} \cdot T_s\right)z^{-1} + \left(1 - 2 \cdot g_{\text{min}} \cdot \text{damp} \cdot \text{freq} \cdot T_s + \text{freq}^2 \cdot T_s^2\right)z^{-2}}
-                \end{equation}
+            % 2. 令$s = \frac{1-z^{-1}}{T_s}$, $T_s$表示采样周期: 
+            %     \begin{equation}
+            %         N(z) = \frac{1 - \left(2 + 2 \cdot \text{damp} \cdot \text{freq} \cdot T_s\right)z^{-1} + \left(1 - 2 \cdot \text{damp} \cdot \text{freq} \cdot T_s + \text{freq}^2 \cdot T_s^2\right)z^{-2}}{1 - \left(2 + 2 \cdot g_{\text{min}} \cdot \text{damp} \cdot \text{freq} \cdot T_s\right)z^{-1} + \left(1 - 2 \cdot g_{\text{min}} \cdot \text{damp} \cdot \text{freq} \cdot T_s + \text{freq}^2 \cdot T_s^2\right)z^{-2}}
+            %     \end{equation}
 
-            3. 差分方程形式：
-            \begin{equation}
-                y(k) = b_0 \cdot x(k) + b_1 \cdot x(k-1) + b_2 \cdot x(k-2) - a_1 \cdot y(k-1) - a_2 \cdot y(k-2)
-            \end{equation}
-            其中：
-                \begin{equation}
-                    \begin{aligned}
-                        a_1 &= 2 + 2 \cdot \text{damp} \cdot \text{freq} \cdot T_s \\
-                        a_2 &= 1 - 2 \cdot \text{damp} \cdot \text{freq} \cdot T_s + \text{freq}^2 \cdot T_s^2 \\
-                        b_0 &= 1 \\
-                        b_1 &= 2 + 2 \cdot g_{\text{min}} \cdot \text{damp} \cdot \text{freq} \cdot T_s \\
-                        b_2 &= 1 - 2 \cdot g_{\text{min}} \cdot \text{damp} \cdot \text{freq} \cdot T_s + \text{freq}^2 \cdot T_s^2.
-                        \end{aligned}
-                \end{equation}
-            举例：
-            \begin{equation}
-                \begin{aligned}
-                    &\text{damp} = 30 \\
-                    &\text{freq} = 50 \cdot  2\pi \\
-                    &g_{\text{min}} =  0.01\\
-                    &T_s = 0.001.
-                    \end{aligned}
-            \end{equation}
+            % 3. 差分方程形式：
+            % \begin{equation}
+            %     y(k) = b_0 \cdot x(k) + b_1 \cdot x(k-1) + b_2 \cdot x(k-2) - a_1 \cdot y(k-1) - a_2 \cdot y(k-2)
+            % \end{equation}
+            % 其中：
+            %     \begin{equation}
+            %         \begin{aligned}
+            %             a_1 &= 2 + 2 \cdot \text{damp} \cdot \text{freq} \cdot T_s \\
+            %             a_2 &= 1 - 2 \cdot \text{damp} \cdot \text{freq} \cdot T_s + \text{freq}^2 \cdot T_s^2 \\
+            %             b_0 &= 1 \\
+            %             b_1 &= 2 + 2 \cdot g_{\text{min}} \cdot \text{damp} \cdot \text{freq} \cdot T_s \\
+            %             b_2 &= 1 - 2 \cdot g_{\text{min}} \cdot \text{damp} \cdot \text{freq} \cdot T_s + \text{freq}^2 \cdot T_s^2.
+            %             \end{aligned}
+            %     \end{equation}
+            % 举例：
+            % \begin{equation}
+            %     \begin{aligned}
+            %         &\text{damp} = 30 \\
+            %         &\text{freq} = 50 \cdot  2\pi \\
+            %         &g_{\text{min}} =  0.01\\
+            %         &T_s = 0.001.
+            %         \end{aligned}
+            % \end{equation}
         
         \subsubsection*{双线性变换陷波滤波器}
-            令 $s = \frac{2}{T_s}\frac{1-z^{-1}}{1+z^{-1}}$, 带入连续模型(\ref{eq:Cxb}):
+            令 $s = \frac{2}{T_s}\frac{1-z^{-1}}{1+z^{-1}}$, 带入连续模型(\ref{eq:Ns}):
         \begin{lstlisting}[language = matlab]
             % 定义s变量
             s = tf('s');
@@ -231,8 +231,63 @@ CC（Connection Confirmation）功能\cite{GB18487_1}：CC 信号负责最终确
             H_s = (s^2 + 2*damp*freq*gmin*s + freq^2) / (s^2 + 2*damp*freq*s + freq^2)
             Ts = 0.001;  % 采样时间
             H_z = c2d(H_s, Ts, 'tustin')
+            %%如果已经知道了系数     
+            a0 = (4 + 4*damp*freq*gmin*Ts + freq^2*Ts^2);
+            a1 = 2*freq^2*Ts^2-8;
+            a2 = 4-4*damp*freq*gmin*Ts+freq^2*Ts^2;
+            b0 = (4 + 4*damp*freq*Ts + freq^2*Ts^2);
+            b1 = 2*freq^2*Ts^2-8;
+            b2 = 4-4*damp*freq*Ts+freq^2*Ts^2;
+            Hznum = [a0,a1,a2]./b0
+            Hzden = [b0,b1,b2]./b0
+
+            tf(Hznum,Hzden,-1)
         \end{lstlisting}
-        
+        Mathematic的计算流程：
+        \begin{lstlisting}
+        G[s_] = (s^2 + 2*freq*gmin*damp*s + freq^2)/(s^2 + 2*freq*damp*s + freq^2)
+        result = G[(2/T)*((1 - z^-1)/(1 + z^-1))]
+
+        (4 - 4 damp freq gmin T + freq^2 T^2 - 8 z + 2 freq^2 T^2 z + 4 z^2 + 
+        4 damp freq gmin T z^2 + freq^2 T^2 z^2)/(4 - 4 damp freq T + 
+        freq^2 T^2 - 8 z + 2 freq^2 T^2 z + 4 z^2 + 4 damp freq T z^2 + 
+        freq^2 T^2 z^2)
+        \end{lstlisting}
+        上面的变换有点问题，双线性变换：
+
+        1. 连续时间传递函数：
+        \begin{equation}
+            N(s) = \frac{s^2 + 2\cdot g_\mathrm{min} \cdot \mathrm{freq} \cdot \mathrm{damp}\cdot s + \mathrm{freq}^2}{s^2 + 2\cdot \mathrm{freq} \cdot \mathrm{damp} \cdot s + \mathrm{freq}^2}
+            \label{eq:Ns}
+        \end{equation}
+
+        2. 双线性变换, 令 $s = \frac{2}{T_s}\frac{1-z^{-1}}{1+z^{-1}}$, 带入连续模型(\ref{eq:Ns}):
+         \begin{equation}
+            N(z) = \frac{a_0z^2+a_1z+a_2}{b_0z^2+b_1z+b_2}
+         \end{equation}
+         其中：
+        \begin{equation}
+            \begin{aligned}
+                a_0 &= 4 + 4 \cdot \text{damp} \cdot \text{freq} \cdot g_\text{min} \cdot T_s + (\text{freq} \cdot T_s)^2\\
+                a_1 &= 2 (\text{freq} \cdot T_s)^2 -8 \\
+                a_2 &= 4 - 4 \cdot \text{damp} \cdot \text{freq} \cdot g_\text{min} \cdot T_s + (\text{freq} \cdot T_s)^2\\
+                b_0 &= 4 + 4 \cdot \text{damp} \cdot \text{freq}  \cdot T_s + (\text{freq} \cdot T_s)^2\\
+                b_1 &= 2 (\text{freq} \cdot T_s)^2 -8 \\
+                b_2 &= 4 - 4 \cdot \text{damp} \cdot \text{freq}  \cdot T_s + (\text{freq} \cdot T_s)^2.
+            \end{aligned}
+        \end{equation}
+
+        3.举例：
+        \begin{equation}
+            \begin{aligned}
+                \text{freq} &= 50\cdot2\pi\\
+                \text{damp} &= 3 \\
+                g_\text{min} &= 0.01\\
+                T_s &= 0.001.
+            \end{aligned}
+        \end{equation}
+        其中：freq表示滤波频率，damp表示陷波阻尼，$g_\text{min}$表示陷波增益，$T_s$表示采样频率。
+
 
         \subsubsection*{RC电阻测量}
             \begin{figure}[H]

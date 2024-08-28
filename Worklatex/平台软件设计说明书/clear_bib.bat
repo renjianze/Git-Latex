@@ -19,6 +19,7 @@ del *.gz
 del *.spl
 del *.bbl
 del *.cpt
+del *.synctex
 del
 
 
