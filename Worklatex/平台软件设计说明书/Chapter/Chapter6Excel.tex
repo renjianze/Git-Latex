@@ -1,0 +1,102 @@
+\chapter{控制引导CP}
+
+
+\begin{table}[H]
+    \renewcommand{\arraystretch}{1.3}
+    \centering
+    \caption{车辆连接状态及RC阻值}
+    \begin{tabular}{ccccc}   
+        \toprule
+        状态  & RC  & R4 & $V_{cc}$ & 连接状态及额定电流\\    
+        \midrule
+        状态A  & -  & - & 5 V &   \\
+        状态C  & 1.5 k$\Omega$  & - & 3.75 V &  10 A \\
+        状态D  & 680 $\Omega$  & - &  2.88 V &  16 A  \\
+        状态E  & 220 $\Omega$ & - &   1.53 V &  32 A  \\
+        状态F  & 100 $\Omega$ & - &   0.88 V &  63 A  \\
+        状态B  & \multicolumn{2}{c}{3.3$\thicksim$ 3.52 k$\Omega$} & 4.34 V &车辆接口处于半连接状态\\
+        \bottomrule
+    \end{tabular}
+    \label{tab:RC2}
+\end{table}
+
+
+\begin{table}[H]
+    \renewcommand{\arraystretch}{1.3}
+    \centering
+    \caption{CC连接确认表}
+    \begin{tabular}{ccccc}   
+        \toprule
+        CCM\_CC\_Status  & \textcolor{red}{\bf HCU\_V2V\_Enable}  & $\text{R}_c$ &CC\_Voltage\_Limit &CCM\_CC\_MaxACCurent\\    
+        \midrule
+        DisConnected 0  & 0/1  & $\infty$ & CC\_Voltage\_Limit0 &  0 A \\
+        \hline
+        AC Connected 1  & 0   & 1.5 k$\Omega$ & CC\_Voltage\_Limit11 &  10 A \\
+        AC Connected 1  & 0  & 680 $\Omega$ &  CC\_Voltage\_Limit12 &  16 A  \\
+        AC Connected 1  & 0 & 220 $\Omega$ &  CC\_Voltage\_Limit13 &  32 A  \\
+        AC Connected 1  & 0 & 100 $\Omega$ &  CC\_Voltage\_Limit14 &  63 A  \\
+        \hline
+        Half-Connected 2& 0/1 & $\text{R}_c+\text{R}_4\approx 3.3 \text{k} \Omega$& CC\_Voltage\_Limit2 & 0 A\\
+        \hline
+        InvertV2L Connected 3  & 0& 2.7 k$\Omega$&CC\_Voltage\_Limit31& 10 A\\
+        InvertV2L Connected 3  & 0& 2.0 k$\Omega$&CC\_Voltage\_Limit32& 16 A\\
+        InvertV2L Connected 3  & 0& 1.0 k$\Omega$&CC\_Voltage\_Limit33& 32 A\\
+        InvertV2L Connected 3  & 0& 470$\Omega$&CC\_Voltage\_Limit34& 63 A\\
+        \hline
+        InvertV2V Connected 4  & 1&1.5 k$\Omega$& CC\_Voltage\_Limit11& 10 A\\
+        InvertV2V Connected 4  & 1&680 $\Omega$& CC\_Voltage\_Limit12& 16 A\\
+        InvertV2V Connected 4  & 1&220 $\Omega$ & CC\_Voltage\_Limit13& 32 A\\
+        InvertV2V Connected 4  & 1& 100 $\Omega$& CC\_Voltage\_Limit14&63 A\\
+        \hline
+        Invalid 5  &0/1&-&-&0 A\\
+        \bottomrule
+    \end{tabular}
+    \label{tab:RC2}
+\end{table}
+\begin{enumerate}
+    \item 通过HCU\_V2V\_Enable信号确认车辆是否处于V2V放电模式；
+    \item V2V模式有效充电电流分为四个等级，其它均为无效；
+    \item 不在V2V模式是，分为交流充电和V2L放电模式；
+\end{enumerate}
+
+
+\begin{algorithm}
+    % \SetAlgoLined
+    \caption{Connection Confirmation} 
+    \label{alg3} 
+    \renewcommand{\baselinestretch}{1.5} % 设置行距为 1.5 倍
+    \selectfont
+    \begin{algorithmic}[1] % [1] 表示显示行号
+        \REQUIRE ADC\_CC\_Voltage,HCU\_V2V\_Enable;
+        \ENSURE CCM\_CC\_Status, CCM\_CC\_MaxACCurent;
+        \STATE Begin
+        \STATE Get the AD sampling value of CC voltage:ADC\_CC\_Voltage;
+        \STATE 1)Calculate the original sampled voltage of CC:Raw\_CC\_Voltage;
+        \STATE 2)Calculate the filtered sampled voltage of CC: Samp\_CC\_Voltage;
+        \STATE 3)Determine the connection status based on Table ;
+        \IF{HCU\_V2V\_Enable==0}
+        \IF{Samp\_CC\_Voltage == CC\_Voltage\_Limit0 } 
+            \STATE CCM\_CC\_ACStatus = 0 $\mapsto$  DisConnected 
+        \ELSIF{Samp\_CC\_Voltage == CC\_Voltage\_Limit2}
+            \STATE CCM\_CC\_ACStatus = 2  $\mapsto$ Half-Connected
+        \ELSIF{Samp\_CC\_Voltage == CC\_Voltage\_Limit1$i$}
+            \STATE CCM\_CC\_ACStatus = 1  $\mapsto$ AC Connected
+        \ELSIF{Samp\_CC\_Voltage == CC\_Voltage\_Limit3$i$}
+            \STATE CCM\_CC\_ACStatus = 3  $\mapsto$ InvertV2L Connected
+        \ELSE
+            \STATE CCM\_CC\_ACStatus = 5  $\mapsto$ Invalid
+        \ENDIF
+        \ELSIF{HCU\_V2V\_Enable==1}
+            \IF{Samp\_CC\_Voltage == CC\_Voltage\_Limit0 } 
+                \STATE CCM\_CC\_ACStatus = 0 $\mapsto$  DisConnected 
+            \ELSIF{Samp\_CC\_Voltage == CC\_Voltage\_Limit2}
+                \STATE CCM\_CC\_ACStatus = 2  $\mapsto$ Half-Connected
+            \ELSIF{Samp\_CC\_Voltage == CC\_Voltage\_Limit4$i$}
+                \STATE CCM\_CC\_ACStatus = 4  $\mapsto$ InvertV2V Connected
+            \ELSE
+                \STATE CCM\_CC\_ACStatus = 5  $\mapsto$ Invalid
+            \ENDIF
+        \ENDIF
+        \STATE End 
+    \end{algorithmic} 
+\end{algorithm}
